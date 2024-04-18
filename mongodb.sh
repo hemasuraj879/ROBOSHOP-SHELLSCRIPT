@@ -24,7 +24,7 @@ VALIDATE(){
 }
 
 
-cp /home/centos/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
+cp /home/centos//ROBOSHOP-SHELLSCRIPT/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
 VALIDATE $? "COPYING MONGO.REPO"
 
 yum install mongodb-org -y  &>>$LOGFILE
