@@ -32,8 +32,8 @@ else
     echo "ROBOSHOP USER ALREADY EXISTS"
 fi 
 
-# mkdir /app &>>$LOGFILE
-# VALIDATE $? "CREATING DIRECTORY"
+mkdir /app &>>$LOGFILE
+VALIDATE $? "CREATING DIRECTORY"
 
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 VALIDATE $? "SETTING UP NODEJS"
