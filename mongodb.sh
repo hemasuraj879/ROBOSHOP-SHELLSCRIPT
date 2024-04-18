@@ -1,44 +1,54 @@
-#!/bin//bash
+#!/bin/bash
 
-# THIS SCRIPT IS TO GET THE ALERT EMAIL OF DISK USAGE IF IT IS MORE THAN THREESHOLD LIMIT
-
+DATE=$(date +%F)
 LOGSDIR=/tmp
-DATE=$(date +%Y-%m-%d)
-LOGFILE=$LOGSDIR/$0-$DATE.log
+
+# /home/centos/shellscript-logs/script-name-date.log
 SCRIPT_NAME=$0
-
-
+LOGFILE=$LOGSDIR/$0-$DATE.log
 USERID=$(id -u)
-if [ $USERID -ne 0 ]
+R="\e[31m"
+G="\e[32m"
+N="\e[0m"
+Y="\e[33m"
+
+if [ $USERID -ne 0 ];
 then
-    echo "ERROR: PLEASE SWITCH TO ROOT USER"
+    echo -e "$R ERROR:: Please run this script with root access $N"
     exit 1
 fi
 
 VALIDATE(){
-    if [ $1 -ne 0 ]
+    if [ $1 -ne 0 ];
     then
-        echo "$2 IS FAILURE"
+        echo -e "$2 ... $R FAILURE $N"
+        exit 1
     else
-        echo "$2 IS SUCCESS"
-    fi 
+        echo -e "$2 ... $G SUCCESS $N"
+    fi
 }
 
 
-cp /home/centos/ROBOSHOP-SHELLSCRIPT/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
-VALIDATE $? "COPYING MONGO.REPO"
+cp /home/centos/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
 
-yum install mongodb-org -y  &>>$LOGFILE
-VALIDATE $? "INSTALLING MONGO.REPO"
+VALIDATE $? "Copied MongoDB repo into yum.repos.d"
 
-systemctl enable mongod &>>$LOGFILE
-VALIDATE $? "ENABLING MONGO.REPO"
+yum install mongodb-org -y &>> $LOGFILE
 
-systemctl start mongod &>>$LOGFILE
-VALIDATE $? "STARTING MONGO.REPO"
+VALIDATE $? "Installation of MongoDB"
 
-sed -i 's/127.0.0.1/0.0.0.0 /' /etc/mongod.conf &>>$LOGFILE
-VALIDATE $? "EDITING MONGO.CONF"
+systemctl enable mongod &>> $LOGFILE
 
-systemctl restart mongod  &>>$LOGFILE
-VALIDATE $? "RESTARING MONGODB"
+VALIDATE $? "Enabling MongoDB"
+
+systemctl start mongod &>> $LOGFILE
+
+VALIDATE $? "Starting MongoDB"
+
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $LOGFILE
+
+VALIDATE $? "Edited MongoDB conf"
+
+systemctl restart mongod &>> $LOGFILE
+
+VALIDATE $? "Restarting MonogoDB"
