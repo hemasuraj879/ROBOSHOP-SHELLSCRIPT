@@ -3,9 +3,10 @@
 # THIS SCRIPT IS TO GET THE ALERT EMAIL OF DISK USAGE IF IT IS MORE THAN THREESHOLD LIMIT
 
 LOGSDIR=/tmp/shell-script-log
+DATE=$(date +%Y-%m-%d)
 LOGFILE=$LOGSDIR/$0-$DATE.log
 SCRIPT_NAME=$0
-DATE=$(date +%Y-%m-%d)
+
 
 USERID=$(id -u)
 if [ $USERID -ne 0 ]
@@ -24,7 +25,7 @@ VALIDATE(){
 }
 
 
-cp /home/centos//ROBOSHOP-SHELLSCRIPT/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
+cp /home/centos/ROBOSHOP-SHELLSCRIPT/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
 VALIDATE $? "COPYING MONGO.REPO"
 
 yum install mongodb-org -y  &>>$LOGFILE
