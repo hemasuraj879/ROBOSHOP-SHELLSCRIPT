@@ -43,5 +43,5 @@ VALIDATE $? "GOING TO THE APPLICATION FOLDER"
 unzip /tmp/web.zip  &>>$LOGSFILE
 VALIDATE $? "UNZIPPING THE APPLICATION"
 
-CP /home/centos/ROBOSHOP-SHELLSCRIPT/roboshop.conf /etc/nginx/default.d/roboshop.conf &>>$LOGSFILE
+cp /home/centos/ROBOSHOP-SHELLSCRIPT/roboshop.conf /etc/nginx/default.d/roboshop.conf &>>$LOGSFILE
 VALIDATE $? "COPYING THE CONF FILE"
