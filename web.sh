@@ -6,7 +6,7 @@ SCRIPT_NAME=$0
 DATE=$(date +%Y-%m-%d)
 
 USERID=$(id -u)
-if [ $? -ne 0 ]
+if [ $USERID -ne 0 ]
 then
     echo "ERROR: PLEASE SWITCH TO ROOT USER"
     exit 1
