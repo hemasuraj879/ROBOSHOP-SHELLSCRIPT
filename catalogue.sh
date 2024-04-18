@@ -71,5 +71,5 @@ VALIDATE $? "COPYING MONGO.REPO"
 yum install mongodb-org-shell -y   &>>$LOGFILE
 VALIDATE $? "INSTALLING MONGO.REPO"
 
-mongo --host 172.31.87.35 </app/schema/catalogue.js &>>$LOGFILE
+mongo --host 172.31.92.32 </app/schema/catalogue.js &>>$LOGFILE
 VALIDATE $? "LOADING THE SHCEMA"
