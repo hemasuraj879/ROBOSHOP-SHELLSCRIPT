@@ -2,7 +2,6 @@
 
 DATE=$(date +%F)
 LOGSDIR=/tmp
-
 # /home/centos/shellscript-logs/script-name-date.log
 SCRIPT_NAME=$0
 LOGFILE=$LOGSDIR/$0-$DATE.log
@@ -29,7 +28,7 @@ VALIDATE(){
 }
 
 
-cp /home/centos/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
 
 VALIDATE $? "Copied MongoDB repo into yum.repos.d"
 
