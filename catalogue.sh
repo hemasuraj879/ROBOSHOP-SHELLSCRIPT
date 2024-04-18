@@ -28,15 +28,14 @@ if [ $ROBOSHOP_USER -ne 0 ]
 then
     ehco "ROBOSHOP USER DOES NOT EXISTS"
     useradd roboshop &>>$LOGFILE
-    exit 1
 else
     echo "ROBOSHOP USER ALREADY EXISTS"
 fi 
 
-WORKDIR=$(/app)
+WORKDIR=$(/app) &>>$LOGFILE
 if [ -d $WORKDIR ]
 then
-    ehco "/APP DIRECTORY EXISTS"
+    echo "/APP DIRECTORY EXISTS"
 else
     echo "/APP DIRECTORY DOES NOT EXISTS"
     mkdir /app &>>$LOGFILE
@@ -54,7 +53,29 @@ VALIDATE $? "DOWNLOADING THE CONTENT"
 cd /app &>>$LOGFILE
 VALIDATE $? "MOVING TO THE CONTENT"
 
+unzip /tmp/catalogue.zip &>>$LOGFILE
+VALIDATE $? "UNZIPPING THE APPLICATION"
+
 npm install &>>$LOGFILE
 VALIDATE $? "INSTALLING THE DEPENDENCIES"
 
+cp /home/centos/ROBOSHOP-SHELLSCRIPT/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
+VALIDATE $? "COPYING THE APPLICATION"
 
+systemctl daemon-reload &>>$LOGFILE
+VALIDATE $? "DAEMON RELOADING"
+
+systemctl enable catalogue &>>$LOGFILE
+VALIDATE $? "ENABLING CATALOGUE"
+
+systemctl start catalogue &>>$LOGFILE
+VALIDATE $? "STARTING CATALOGUE"
+
+cp /home/centos/ROBOSHOP-SHELLSCRIPT/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
+VALIDATE $? "COPYING MONGO.REPO"
+
+yum install mongodb-org-shell -y   &>>$LOGFILE
+VALIDATE $? "INSTALLING MONGO.REPO"
+
+mongo --host 172.31.87.35 </app/schema/catalogue.js &>>$LOGFILE
+VALIDATE $? "LOADING THE SHCEMA"
