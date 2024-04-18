@@ -2,7 +2,7 @@
 
 LOGSDIR=/tmp
 LOGSFILE=$LOGSDIR/$0-$DATE.log
-SCRIPT_NAME =$0
+SCRIPT_NAME=$0
 DATE=$(date +%Y-%m-%d)
 
 USERID=$(id -u)
