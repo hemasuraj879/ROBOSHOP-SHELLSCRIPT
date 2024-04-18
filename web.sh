@@ -1,47 +1,64 @@
 #!/bin/bash
 
+DATE=$(date +%F)
 LOGSDIR=/tmp
-LOGSFILE=$LOGSDIR/$0-$DATE.log
+# /home/centos/shellscript-logs/script-name-date.log
 SCRIPT_NAME=$0
-DATE=$(date +%Y-%m-%d)
-
+LOGFILE=$LOGSDIR/$0-$DATE.log
 USERID=$(id -u)
-if [ $USERID -ne 0 ]
+R="\e[31m"
+G="\e[32m"
+N="\e[0m"
+Y="\e[33m"
+
+if [ $USERID -ne 0 ];
 then
-    echo "ERROR: PLEASE SWITCH TO ROOT USER"
+    echo -e "$R ERROR:: Please run this script with root access $N"
     exit 1
 fi
 
 VALIDATE(){
-    if [ $1 -ne 0 ]
+    if [ $1 -ne 0 ];
     then
-        echo "$2 IS FAILURE"
+        echo -e "$2 ... $R FAILURE $N"
+        exit 1
     else
-        echo "$2 IS SUCCESS"
-    fi 
+        echo -e "$2 ... $G SUCCESS $N"
+    fi
 }
 
-yum install nginx -y &>>$LOGSFILE
-VALIDATE $? "INSTALLING NGINX"
+yum install nginx -y &>>$LOGFILE
 
+VALIDATE $? "Installing Nginx"
 
-systemctl enable nginx &>>$LOGSFILE
-VALIDATE $? "ENABLING NGINX"
+systemctl enable nginx &>>$LOGFILE
 
-systemctl start nginx &>>$LOGSFILE
-VALIDATE $? "STARTING NGINX"
+VALIDATE $? "Enabling Nginx"
 
-rm -rf /usr/share/nginx/html/* &>>$LOGSFILE
-VALIDATE $? "REMOVING THE CONENT"
+systemctl start nginx &>>$LOGFILE
 
-curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip   &>>$LOGSFILE
-VALIDATE $? "DOWNLOADING THE CONENT"
+VALIDATE $? "Starting Nginx"
 
-cd /usr/share/nginx/html  &>>$LOGSFILE
-VALIDATE $? "GOING TO THE APPLICATION FOLDER"
+rm -rf /usr/share/nginx/html/* &>>$LOGFILE
 
-unzip /tmp/web.zip  &>>$LOGSFILE
-VALIDATE $? "UNZIPPING THE APPLICATION"
+VALIDATE $? "Removing default index html files"
 
-cp /home/centos/ROBOSHOP-SHELLSCRIPT/roboshop.conf /etc/nginx/default.d/roboshop.conf &>>$LOGSFILE
-VALIDATE $? "COPYING THE CONF FILE"
+curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip &>>$LOGFILE
+
+VALIDATE $? "Downloading web artifact"
+
+cd /usr/share/nginx/html &>>$LOGFILE
+
+VALIDATE $? "Moving to default HTML directory"
+
+unzip /tmp/web.zip &>>$LOGFILE
+
+VALIDATE $? "unzipping web artifact"
+
+cp /home/centos/ROBOSHOP-SHELLSCRIPT/roboshop.conf /etc/nginx/default.d/roboshop.conf  &>>$LOGFILE
+
+VALIDATE $? "copying roboshop config"
+
+systemctl restart nginx  &>>$LOGFILE
+
+VALIDATE $? "Restarting Nginx"
