@@ -32,14 +32,8 @@ else
     echo "ROBOSHOP USER ALREADY EXISTS"
 fi 
 
-WORKDIR=$(/app) &>>$LOGFILE
-if [ -d $WORKDIR ]
-then
-    echo "/APP DIRECTORY EXISTS"
-else
-    echo "/APP DIRECTORY DOES NOT EXISTS"
-    mkdir /app &>>$LOGFILE
-fi 
+# mkdir /app &>>$LOGFILE
+# VALIDATE $? "CREATING DIRECTORY"
 
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 VALIDATE $? "SETTING UP NODEJS"
