@@ -71,7 +71,7 @@ npm install  &>>$LOGFILE
 
 VALIDATE $? "INSTALLING DEPENDENCIES"
 
-cp /home/centos/ROBOSHOP-SHELL/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
+cp /home/centos/ROBOSHOP-SHELLSCRIPT/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
 
 VALIDATE $? "COPYING THE SERVICE"
 
@@ -87,7 +87,7 @@ systemctl start catalogue &>>$LOGFILE
 
 VALIDATE $? "STARTING CATALOGUE"
 
-cp /home/centos/ROBOSHOP-SHELL/mongo.repo  /etc/yum.repos.d/mongo.repo &>>$LOGFILE
+cp /home/centos/ROBOSHOP-SHELLSCRIPT/mongo.repo  /etc/yum.repos.d/mongo.repo &>>$LOGFILE
 
 VALIDATE $? "COPYING MONGO-REPO"
 
